@@ -31,98 +31,124 @@ The first step was to connect to the designated application server using SSH.
 
 ```bash
 ssh <user>@<server>
-2. Create the Temporary User
+```
+
+
+### 2. Create the Temporary User
 
 The user account was created with an expiry date.
 
+```bash
 sudo useradd -e 2027-01-28 kirsty
+```
 
-The -e option specifies the account expiration date.
+The `-e` option specifies the account expiration date.
 
-3. Verify the User
+### 3. Verify the User
 
 The account was verified using:
 
+```bash
 id kirsty
+```
 
 The account information can also be checked using:
 
+```bash
 getent passwd kirsty
-4. Verify the Account Expiry
+```
+
+### 4. Verify the Account Expiry
 
 The configured expiry date can be checked using:
 
+```bash
 sudo chage -l kirsty
+```
 
-The output should show:
+The output should show an account expiration date similar to:
 
+```text
 Account expires : Jan 28, 2027
-Verification & Troubleshooting
-User Already Exists
+```
+
+## Verification & Troubleshooting
+
+### User Already Exists
 
 Check whether the user already exists:
 
+```bash
 getent passwd kirsty
-Check Account Expiration
+```
+
+### Check Account Expiration
 
 Use:
 
+```bash
 sudo chage -l kirsty
+```
 
 This displays the account aging and expiration information.
 
-Check User Identity
+### Check User Identity
 
 Use:
 
+```bash
 id kirsty
+```
 
 This confirms that the user account exists and displays its UID and group information.
 
-Key Concepts
-Temporary User Accounts
+## Key Concepts
+
+### Temporary User Accounts
 
 Linux accounts can be configured with an expiration date so that access automatically becomes invalid after a specified date.
 
 This is useful for temporary employees, contractors, testing accounts, or other users who should only have access for a defined period.
 
-Account Expiration
+### Account Expiration
 
 The account expiration date determines when the user's account becomes inactive.
 
 Using an expiration date helps administrators manage account lifecycles without relying entirely on manual account removal.
 
-User Lifecycle Management
+### User Lifecycle Management
 
 User creation and account expiration are important parts of Linux system administration.
 
 Proper account lifecycle management helps prevent unnecessary accounts from remaining active indefinitely.
 
-DevOps Relevance
+## DevOps Relevance
 
 Temporary accounts and account expiration are relevant when managing:
 
-Linux servers
-Application servers
-Cloud virtual machines
-Development environments
-CI/CD infrastructure
-Temporary engineering access
-Contractor access
+* Linux servers
+* Application servers
+* Cloud virtual machines
+* Development environments
+* CI/CD infrastructure
+* Temporary engineering access
+* Contractor access
 
 Automating account creation and expiration can also become part of configuration management and infrastructure automation using tools such as Ansible.
 
-What I Learned
-How to create a Linux user account
-How to configure an account expiration date
-How to verify Linux user accounts
-How to inspect account aging information
-Why account lifecycle management is important
-How temporary access can be controlled through account expiration
-Commands
+## What I Learned
 
-The complete command sequence for this challenge is available in commands.sh.
+* How to create a Linux user account
+* How to configure an account expiration date
+* How to verify Linux user accounts
+* How to inspect account aging information
+* Why account lifecycle management is important
+* How temporary access can be controlled through account expiration
 
-Challenge Status
+## Commands
 
-Completed — Day 2/100 ✅
+The complete command sequence for this challenge is available in [`commands.sh`](./commands.sh).
+
+## Challenge Status
+
+**Completed — Day 2/100** ✅
