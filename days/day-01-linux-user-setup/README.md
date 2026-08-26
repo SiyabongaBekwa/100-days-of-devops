@@ -24,36 +24,124 @@ The purpose of this task was to practice basic Linux account management and unde
 
 ## Implementation
 
-The task involved configuring a Linux user account with a non-interactive login shell.
+### 1. Connect to the Application Server
 
-The implementation consisted of:
+The first step was to connect to the designated application server using SSH.
 
-1. Accessing the appropriate Nautilus server.
-2. Creating or configuring the required Linux user.
-3. Assigning a non-interactive shell to the account.
-4. Verifying the resulting account configuration.
+```bash
+ssh <user>@<server>
+```
 
-> **Security note:** Credentials used to access the KodeKloud lab are intentionally excluded from this repository.
+> Credentials are intentionally excluded from this repository.
+
+### 2. Create the Linux User
+
+The user was created using:
+
+```bash
+sudo useradd -m -s /usr/sbin/nologin <username>
+```
+
+The options used were:
+
+| Option              | Purpose                                         |
+| ------------------- | ----------------------------------------------- |
+| `-m`                | Creates the user's home directory under `/home` |
+| `-s`                | Specifies the user's login shell                |
+| `/usr/sbin/nologin` | Prevents normal interactive shell access        |
+
+### 3. Verify the Account
+
+The account configuration was checked using:
+
+```bash
+cat /etc/passwd
+```
+
+A more targeted check can be performed with:
+
+```bash
+grep '<username>' /etc/passwd
+```
+
+The expected account entry contains:
+
+```text
+<username>:x:<UID>:<GID>::/home/<username>:/usr/sbin/nologin
+```
+
+The important part is:
+
+```text
+/usr/sbin/nologin
+```
+
+which confirms that the account has been configured with a non-interactive shell.
+
+### 4. Test Interactive Access
+
+The configuration was tested by attempting to switch to the account:
+
+```bash
+sudo su <username>
+```
+
+The expected result is:
+
+```text
+This account is currently not available.
+```
+
+This provides practical verification that the account cannot be used as a normal interactive shell account.
+
+## Verification & Troubleshooting
+
+### Common Issues
+
+#### Permission denied
+
+Ensure that the account performing the operation has the required `sudo` privileges.
+
+#### User already exists
+
+Check whether the username already exists:
+
+```bash
+cat /etc/passwd | grep '<username>'
+```
+
+#### Shell not found
+
+Verify that the configured shell exists:
+
+```bash
+ls -l /usr/sbin/nologin
+```
+
+### Additional Commands
+
+List users configured with a non-interactive `nologin` shell:
+
+```bash
+grep nologin /etc/passwd
+```
+
+Check the user's UID and group membership:
+
+```bash
+id <username>
+```
+
+Remove the user and its home directory if cleanup is required:
+
+```bash
+sudo userdel -r <username>
+```
 
 ## Commands
 
-The exact commands used during the lab session are documented in command.sh file without passwords, private keys, tokens, or other sensitive credentials.
+The complete command sequence for this challenge is available in [`commands.sh`](./commands.sh).
 
-## Verification
-
-The final configuration was verified by checking the user's entry in `/etc/passwd`.
-
-The account was configured with a non-interactive shell, such as:
-
-```text
-/sbin/nologin
-```
-
-This prevents the account from being used for a normal interactive terminal session. The account was not configured with a standard interactive shell such as:
-
-```text
-/bin/bash
-```
 
 ## Key Concepts
 

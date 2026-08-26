@@ -10,73 +10,129 @@
 
 #
 
-# Purpose:
+# Objective:
 
-# Document the Linux commands used to create/configure a
+# Create a Linux user with a home directory and configure
 
-# user account with a non-interactive shell.
+# /usr/sbin/nologin as the user's shell.
 
 #
 
-# Security:
+# NOTE:
+
+# Replace <username> with the username specified by the lab.
+
+# Replace <server> and <user> with your lab SSH details.
+
+#
 
 # Do NOT store passwords, private keys, tokens, or credentials
 
 # in this file.
 
-#
-
-# Replace <username> with the username specified by the lab.
-
 # ============================================================
 
 # ============================================================
 
-# 1. Create the Linux user
+# 1. Connect to the application server
 
 # ============================================================
 
-sudo useradd <username>
+ssh <user>@<server>
 
 # ============================================================
 
-# 2. Configure a non-interactive shell
-
-# ============================================================
-
-sudo usermod --shell /sbin/nologin <username>
-
-# ============================================================
-
-# 3. Verify the user's account configuration
-
-# ============================================================
-
-getent passwd <username>
-
-# ============================================================
-
-# 4. Display the username and configured shell
-
-# ============================================================
-
-getent passwd <username> | cut -d: -f1,7
-
-# ============================================================
-
-# Expected result
+# 2. Create the user
 
 # ============================================================
 
 #
 
-# The output should show the configured username together
+# -m creates the user's home directory under /home
 
-# with a non-interactive shell, for example:
+# -s specifies the user's login shell
+
+# /usr/sbin/nologin prevents interactive shell access
 
 #
 
-# <username>:/sbin/nologin
+sudo useradd -m -s /usr/sbin/nologin <username>
+
+# ============================================================
+
+# 3. Verify the user configuration
+
+# ============================================================
+
+cat /etc/passwd
+
+# ============================================================
+
+# 4. Verify the specific user
+
+# ============================================================
+
+grep '<username>' /etc/passwd
+
+# ============================================================
+
+# 5. Test interactive access
+
+# ============================================================
+
+#
+
+# Attempting to switch to the account should result in:
+
+#
+
+# This account is currently not available.
+
+#
+
+sudo su <username>
+
+# ============================================================
+
+# Additional verification commands
+
+# ============================================================
+
+# List users configured with a nologin shell
+
+grep nologin /etc/passwd
+
+# Display user and group information
+
+id <username>
+
+# ============================================================
+
+# Troubleshooting
+
+# ============================================================
+
+# Check whether the user already exists
+
+cat /etc/passwd | grep '<username>'
+
+# Verify that the nologin shell exists
+
+ls -l /usr/sbin/nologin
+
+# ============================================================
+
+# Cleanup — only if required
+
+# ============================================================
+
+#
+
+# Remove the user and its home directory:
+
+#
+
+# sudo userdel -r <username>
 
 #
 
